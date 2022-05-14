@@ -94,9 +94,15 @@ def calculate_surplus_data(sales_row):
     stock = SHEET.worksheet('stock').get_all_values() # gets all of the cells from our stock worksheet
     # pprint(stock) # easier to read data than print(), however it needs to be installed at top of the file "from pprint import pprint"
     stock_row = stock[-1] # using a slice will 'slice' the final items from the list and return it to the new stock varibale'
-    print(stock_row)
+    # print(f'Stock row: {stock_row}')
+    # print(f'Sales row: {sales_row}')
 
-
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row): # zip function that allows us to access two separate lists at the same time
+        surplus = int(stock) - sales # here we have used another method to change the sock 'string' value into an 'integer' value as alternative to [int(num) of num in (stock_data)]
+        surplus_data.append(surplus)
+    # print(surplus_data)
+    return surplus_data
 
 def main():
     """
@@ -105,7 +111,8 @@ def main():
     data = get_sales_data() # defining 'data' as a variable and the place to put the returned, 'vaidated' get_sales_data()
     sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
     update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
-    calculate_surplus_data(sales_data) # to call the function and pass it sales_data list
+    new_surplus_data = calculate_surplus_data(sales_data) # to call the function and pass it sales_data list
+    print(new_surplus_data)
 
 print('Welcome to Love Sandwiches data Automation\n')
 main() # functions must be called below where they are defined
