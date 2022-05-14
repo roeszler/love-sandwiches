@@ -15,8 +15,13 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 # data = sales.get_all_values()
 # print(data)
 
+
+
 def get_sales_data():
-    """ Get sales figures input from the user """
+    """ 
+    Get sales figures input from the user. 
+    Run a while loop to collect a valid string of data from the user via the terminal. which must be a string of 6 numbers separated by commas. The loop will repeatedly request data, until it is in a valid format.
+    """
     while True: #repeats the condition each time the loop runs
         print('Please enter sales data from the last market.')
         print('Data should be six numbers, separated by commas.')
@@ -35,6 +40,9 @@ def get_sales_data():
             break # while loop is stopped
 
     return sales_data # return the validated sales data
+
+
+
 
 def validate_data(values):
     """
@@ -57,5 +65,22 @@ def validate_data(values):
     
     return True # to produce a True value if no errors and provides an input for our if statement to end the while loop
 
-data = get_sales_data() # defining 'data' as a variable and the place to put the returned, vaidated sales data
 
+
+
+# function to insert sales data into our google sale worksheet:
+def update_sales_worksheet(data):
+    """
+    Update sales google worksheet, add new row with the list data provided
+    """
+    print('Updating sales worksheet...\n')
+    sales_worksheet = SHEET.worksheet('sales') # accessing our sales_worksheet from our google sheet
+    sales_worksheet.append_row(data) # adds a new row in the google worksheet selected
+    print('Sales worksheet updated successfully!\n')
+
+
+    
+
+data = get_sales_data() # defining 'data' as a variable and the place to put the returned, 'vaidated' get_sales_data()
+sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
+update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
