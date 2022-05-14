@@ -45,6 +45,8 @@ def get_sales_data():
 
 
 
+
+
 def validate_data(values):
     """
     Inside the try, converts all string values into integers.
@@ -81,6 +83,18 @@ def update_sales_worksheet(data):
 
 
 
+
+def update_surplus_worksheet(data):
+    """
+    Function to update surplus google worksheet, add new row with the list data provided
+    """
+    print('Updating surplus worksheet...\n')
+    surplus_worksheet = SHEET.worksheet('surplus')
+    surplus_worksheet.append_row(data)
+
+    print('Surplus worksheet updated successfully!\n')
+
+
 # function to calculate surplus / deficit data
 def calculate_surplus_data(sales_row):
     """
@@ -112,7 +126,8 @@ def main():
     sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
     update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
     new_surplus_data = calculate_surplus_data(sales_data) # to call the function and pass it sales_data list
-    print(new_surplus_data)
-
+    # print(new_surplus_data)
+    update_surplus_worksheet(new_surplus_data)
+    
 print('Welcome to Love Sandwiches data Automation\n')
 main() # functions must be called below where they are defined
