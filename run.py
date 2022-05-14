@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -79,8 +80,32 @@ def update_sales_worksheet(data):
     print('Sales worksheet updated successfully!\n')
 
 
-    
 
-data = get_sales_data() # defining 'data' as a variable and the place to put the returned, 'vaidated' get_sales_data()
-sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
-update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
+# function to calculate surplus / deficit data
+def calculate_surplus_data(sales_row):
+    """
+    Compare sales with stock and calculate the surplus for each item type.
+
+    The surplus is defined as the sales figure subtracted from the stock: 
+    - Positive indicates waste
+    - Negative indicates sold out state and an increased demand over what was projected.
+    """
+    print('Calculating surplus data...\n')
+    stock = SHEET.worksheet('stock').get_all_values() # gets all of the cells from our stock worksheet
+    # pprint(stock) # easier to read data than print(), however it needs to be installed at top of the file "from pprint import pprint"
+    stock_row = stock[-1] # using a slice will 'slice' the final items from the list and return it to the new stock varibale'
+    print(stock_row)
+
+
+
+def main():
+    """
+    Run all program functions
+    """
+    data = get_sales_data() # defining 'data' as a variable and the place to put the returned, 'vaidated' get_sales_data()
+    sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
+    update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
+    calculate_surplus_data(sales_data) # to call the function and pass it sales_data list
+
+print('Welcome to Love Sandwiches data Automation\n')
+main() # functions must be called below where they are defined
