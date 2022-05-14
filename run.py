@@ -25,7 +25,7 @@ def get_sales_data():
     # print(f'The data provided is {data_str}') # just to check the string inp ut is being recieved correctly
 
     sales_data = data_str.split(',')
-    # print(f'The data you provided converted into a list is:\n{sales_data}')
+    # print(f'The data you provided converted into a list of strings is:\n{sales_data}')
     validate_data(sales_data) # calls the function below and puts the .split() data into it
 
 def validate_data(values):
@@ -34,8 +34,10 @@ def validate_data(values):
     Raises ValueError if strings cannot be converted into int or
     if there are not exactly 6 values.
     """
-    # print(f'The data you provided converted into a list is:\n{values}')
+    # print(f'The data you provided converted into a list of strings is:\n{values}')
+
     try:
+        [int(value) for value in values] # list comprehension to convert 'strings' into integers. Syntax is [expression for item in iterable if condition == True]
         if len(values) !=6: #if the length of the values input 'does not equal' 6
             raise ValueError(
                 f'`Exactly 6 values required, you provided {len(values)}'
