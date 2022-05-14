@@ -71,28 +71,40 @@ def validate_data(values):
 
 
 
-# function to insert sales data into our google sale worksheet:
-def update_sales_worksheet(data):
+# # function to insert sales data into our google sale worksheet:
+# def update_sales_worksheet(data):
+#     """
+#     Update sales google worksheet, add new row with the list data provided
+#     """
+#     print('Updating sales worksheet...\n')
+#     sales_worksheet = SHEET.worksheet('sales') # accessing our sales_worksheet from our google sheet
+#     sales_worksheet.append_row(data) # adds a new row in the google worksheet selected
+#     print('Sales worksheet updated successfully!\n')
+
+# # function to insert sales data into our google surplus worksheet:
+# def update_surplus_worksheet(data):
+#     """
+#     Function to update surplus google worksheet, add new row with the list data provided
+#     """
+#     print('Updating surplus worksheet...\n')
+#     surplus_worksheet = SHEET.worksheet('surplus')
+#     surplus_worksheet.append_row(data)
+
+#     print('Surplus worksheet updated successfully!\n')
+
+# need to update stock worksheet - however can remove the repetition of code by refactoring:
+
+def update_worksheet(data, worksheet_name):
     """
-    Update sales google worksheet, add new row with the list data provided
+    Recieves a list of integers to be inserted into a worksheet
+    Update the relevant worksheet with the data provided
     """
-    print('Updating sales worksheet...\n')
-    sales_worksheet = SHEET.worksheet('sales') # accessing our sales_worksheet from our google sheet
-    sales_worksheet.append_row(data) # adds a new row in the google worksheet selected
-    print('Sales worksheet updated successfully!\n')
+    print(f'Updating {worksheet_name} worksheet...')
+    worksheet_to_update = SHEET.worksheet(worksheet_name)
+    worksheet_to_update.append_row(data)
 
+    print(f'{worksheet_name} worksheet updated successfully!\n')
 
-
-
-def update_surplus_worksheet(data):
-    """
-    Function to update surplus google worksheet, add new row with the list data provided
-    """
-    print('Updating surplus worksheet...\n')
-    surplus_worksheet = SHEET.worksheet('surplus')
-    surplus_worksheet.append_row(data)
-
-    print('Surplus worksheet updated successfully!\n')
 
 
 # function to calculate surplus / deficit data
@@ -104,7 +116,7 @@ def calculate_surplus_data(sales_row):
     - Positive indicates waste
     - Negative indicates sold out state and an increased demand over what was projected.
     """
-    print('Calculating surplus data...\n')
+    print('Calculating surplus data...')
     stock = SHEET.worksheet('stock').get_all_values() # gets all of the cells from our stock worksheet
     # pprint(stock) # easier to read data than print(), however it needs to be installed at top of the file "from pprint import pprint"
     stock_row = stock[-1] # using a slice will 'slice' the final items from the list and return it to the new stock varibale'
@@ -124,10 +136,12 @@ def main():
     """
     data = get_sales_data() # defining 'data' as a variable and the place to put the returned, 'vaidated' get_sales_data()
     sales_data = [int(num) for num in data] # new variable to convert values in 'data' output (which is in string format) into integers with a loop in list comprension format.
-    update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
+    # update_sales_worksheet(sales_data) # to call the function and pass it sales_data list
+    update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data) # to call the function and pass it sales_data list
     # print(new_surplus_data)
-    update_surplus_worksheet(new_surplus_data)
+    # update_surplus_worksheet(new_surplus_data)
+    update_worksheet(new_surplus_data, 'surplus')
     
 print('Welcome to Love Sandwiches data Automation\n')
 main() # functions must be called below where they are defined
