@@ -140,16 +140,27 @@ def get_last_5_entries_sales():
     """
     sales = SHEET.worksheet('sales')
     # coloumn = sales.col_values(3)
-    # print(coloumn)
-
     coloums = []
     for ind in range(1,7):
         column = sales.col_values(ind)
         coloums.append(column[-5:])
-    print(coloums)
+    return coloums
 
 
+def calculate_stock_data(data):
+    """
+    Calculate the average stock for each item type, adding 10%
+    """
+    print('Calculating stock data...')
 
+    new_stock_data = []
+    for column in data:
+        int_column = [int(num) for num in column] # creates a list of integers from strings using list comprehension
+        average = sum(int_column) / len(int_column) # the average sales calculation
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num)) # append the average number to the new_stock_data list outside the for loop
+    # print(new_stock_data)
+    return new_stock_data
 
 def main():
     """
@@ -163,8 +174,9 @@ def main():
     # print(new_surplus_data)
     # update_surplus_worksheet(new_surplus_data)
     update_worksheet(new_surplus_data, 'surplus')
+    sales_columns = get_last_5_entries_sales() 
+    stock_data = calculate_stock_data(sales_columns) # passing the calculate_stock_data function the returned data from the get_last_5_entries_sales function as the information to calculate from
+    update_worksheet(stock_data, 'stock')
     
 print('Welcome to Love Sandwiches data Automation\n')
-# main() # functions must be called below where they are defined
-
-get_last_5_entries_sales() # to test individual functions
+main() # functions must be called below where they are defined
