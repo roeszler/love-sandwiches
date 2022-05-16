@@ -179,3 +179,18 @@ def main():
     
 print('Welcome to Love Sandwiches data Automation\n')
 main() # functions must be called below where they are defined
+
+def get_stock_values(data):
+    """
+    Builds a dictionary, where the keys are the sandwich headings pulled from the spreadsheet, and the values are the calculated stock data.Request data from a worksheet
+
+    Requests data from a worksheet
+    Builds a dictionary
+    Print the dictionary to the terminal for the user
+    """
+    headings = SHEET.worksheet('sales').row_values(1) # Requests data from a worksheet
+    dictionary = {key:value for key,value in zip(headings,stock_data)} # Builds a dictionary using dictionary comprehension syntax
+    return dictionary
+
+stock_values = get_stock_values(stock_data) 
+print(stock_values) # Prints the dictionary to the terminal for the user
